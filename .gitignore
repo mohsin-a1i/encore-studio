@@ -1,6 +1,36 @@
+# Dependencies and local runtime data
 node_modules/
 data/
 .sites-runtime/
-*.tar.gz
-*.log
+.openai/
 bridge.local.json
+
+# Secrets, credentials, and browser state
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*credentials*.json
+*secrets*.json
+*cookies*.json
+*cookies*.txt
+cookies/
+.local-storage/
+
+# Temporary files and local artifacts
+*.log
+*.tmp
+*.bak
+*.tar.gz
+.DS_Store
+Thumbs.db
+**/Cookies
+**/Cookies-journal
+credentials/
+secrets/
+.ssh/
+.npmrc
+*.secret

@@ -23,6 +23,17 @@ const pairs = [
   ['.button', ':scope > .icon', ':scope > span:not(.visually-hidden)'],
 ];
 
+function contentHeight(element, bounds) {
+  const style = getComputedStyle(element);
+  return (
+    bounds.height -
+    parseFloat(style.paddingTop) -
+    parseFloat(style.paddingBottom) -
+    parseFloat(style.borderTopWidth) -
+    parseFloat(style.borderBottomWidth)
+  );
+}
+
 export function initializeMediaPairs(...roots) {
   if (!globalThis.ResizeObserver || !globalThis.MutationObserver) return;
   const tracked = new Map();
@@ -58,14 +69,8 @@ export function initializeMediaPairs(...roots) {
       if (!text.height || !text.width || pair.hasAttribute('data-media-stacked')) continue;
       // A vertical card keeps its existing artwork presentation.
       if (text.left < art.right - 1 || getComputedStyle(pair).flexDirection === 'column') continue;
-      const copyStyle = getComputedStyle(copy);
-      const height =
-        text.height -
-        parseFloat(copyStyle.paddingTop) -
-        parseFloat(copyStyle.paddingBottom) -
-        parseFloat(copyStyle.borderTopWidth) -
-        parseFloat(copyStyle.borderBottomWidth);
-      const size = Math.round(height * 100) / 100;
+      const size = Math.round(contentHeight(copy, text) * 100) / 100;
+      if (size <= 0) continue;
       const style = getComputedStyle(pair);
       const available =
         pair.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);

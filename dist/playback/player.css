@@ -1,0 +1,331 @@
+/* Player styles */
+:root[data-mobile-keyboard] .player,
+:root[data-mobile-keyboard] .explore-idea-fab {
+  visibility: hidden;
+  pointer-events: none;
+}
+.player-expand {
+  display: none;
+}
+.player {
+  position: fixed;
+  inset: auto 0 0;
+  height: var(--player);
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+  z-index: 40;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  align-items: center;
+  gap: 25px;
+  padding: 14px 25px;
+  box-shadow: 0 -12px 40px var(--shadow);
+}
+.now-playing {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+}
+.now-playing img {
+  width: 55px;
+  height: 55px;
+  border-radius: 7px;
+}
+.now-playing strong {
+  display: block;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 220px;
+}
+.now-playing small {
+  display: block;
+  font-size: var(--font-size-micro);
+  color: var(--muted);
+  margin-top: 5px;
+}
+.player-mid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+}
+.transport {
+  display: flex;
+  align-items: center;
+  gap: 19px;
+}
+.transport button {
+  padding: 2px;
+  background: none;
+  color: var(--muted);
+}
+.transport .play-button {
+  border-radius: 50%;
+  background: var(--button-primary-bg);
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  color: var(--on-accent);
+  padding: 0;
+}
+.transport .icon {
+  width: 16px;
+  height: 16px;
+}
+.transport .play-button .icon {
+  width: 19px;
+  height: 19px;
+}
+.transport .play-button:hover:enabled {
+  background: var(--button-primary-hover);
+}
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  font-size: var(--font-size-micro);
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.progress input {
+  width: 100%;
+}
+input[type='range'] {
+  accent-color: var(--accent);
+  height: 3px;
+  cursor: pointer;
+}
+.player-right {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  justify-content: flex-end;
+  color: var(--muted);
+}
+.player-right .volume-bar {
+  flex: 0 1 85px;
+  width: 85px;
+}
+.player-right .lyrics-button {
+  font-size: var(--font-size-body);
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  background: none;
+  color: var(--muted);
+}
+.vertical-line {
+  width: 1px;
+  height: 20px;
+  background: var(--highlight);
+}
+
+/* Each player column must yield space to its neighbours. */
+.player {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
+}
+.now-playing > div,
+.player-mid,
+.player-right {
+  min-width: 0;
+}
+.now-playing img,
+.now-playing > button {
+  flex-shrink: 0;
+}
+.now-playing small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.progress input {
+  min-width: 0;
+}
+.progress > span {
+  flex-shrink: 0;
+  min-width: 34px;
+}
+
+/* A native range remains the interactive control; the track and sparks are decorative. */
+.seek-bar {
+  --seek-fraction: 0;
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 32px;
+  display: flex;
+  align-items: center;
+}
+.seek-bar::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 50%;
+  height: 4px;
+  transform: translateY(-50%);
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--accent) 0%,
+    var(--accent) calc(var(--seek-fraction) * 100%),
+    var(--highlight) calc(var(--seek-fraction) * 100%),
+    var(--highlight) 100%
+  );
+}
+.seek-bar input {
+  position: relative;
+  z-index: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  min-width: 0;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.seek-bar input::-webkit-slider-runnable-track {
+  height: 4px;
+  background: transparent;
+}
+.seek-bar input::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 10px;
+  height: 10px;
+  margin-top: -3px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+}
+.seek-bar input::-moz-range-track {
+  height: 4px;
+  background: transparent;
+}
+.seek-bar input::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+}
+.seek-bar input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+/* The visible head and tapered trail follow the native range thumb. */
+.seek-handle {
+  position: absolute;
+  z-index: 2;
+  left: 5px;
+  top: 50%;
+  width: calc((100% - 10px) * var(--seek-fraction));
+  height: 0;
+  pointer-events: none;
+}
+.seek-handle::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: -5px;
+  width: min(24px, 100%);
+  height: 10px;
+  clip-path: url(#seek-tail-curve);
+  background: var(--accent);
+}
+.seek-handle::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px 2px var(--glow);
+}
+.seek-sparks {
+  position: absolute;
+  z-index: 2;
+  left: calc(5px + (100% - 10px) * var(--seek-fraction));
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  display: none;
+}
+.seek-sparks i {
+  position: absolute;
+  left: -1px;
+  top: -3px;
+  width: 2px;
+  height: 6px;
+  border-radius: 999px;
+  background: linear-gradient(to bottom, var(--text), var(--accent), transparent);
+  box-shadow: 0 0 6px var(--glow);
+  opacity: 0;
+  animation: seek-spark 1.55s cubic-bezier(0.16, 0.7, 0.3, 1) infinite;
+}
+.seek-sparks i:nth-child(1) {
+  --spark-x: -15px;
+  --spark-y: -12px;
+  --spark-angle: -55deg;
+}
+.seek-sparks i:nth-child(2) {
+  --spark-x: 11px;
+  --spark-y: -16px;
+  --spark-angle: 35deg;
+  animation-delay: -0.3s;
+}
+.seek-sparks i:nth-child(3) {
+  --spark-x: -6px;
+  --spark-y: -20px;
+  --spark-angle: -20deg;
+  animation-delay: -0.65s;
+}
+.seek-sparks i:nth-child(4) {
+  --spark-x: 16px;
+  --spark-y: -7px;
+  --spark-angle: 65deg;
+  animation-delay: -0.95s;
+}
+.seek-sparks i:nth-child(5) {
+  --spark-x: -12px;
+  --spark-y: -5px;
+  --spark-angle: -70deg;
+  animation-delay: -1.25s;
+}
+.player[data-playing='true'] .seek-sparks {
+  display: block;
+}
+@keyframes seek-spark {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(var(--spark-angle)) scale(0.35);
+  }
+  15% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--spark-x), var(--spark-y)) rotate(var(--spark-angle)) scale(0.2);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .player[data-playing='true'] .seek-sparks {
+    display: none;
+  }
+}

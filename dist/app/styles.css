@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+
+@import url('./base.css');
+@import url('./controls.css');
+@import url('./layout.css');
+@import url('../library/library.css');
+@import url('../playback/player.css');
+@import url('../studio/studio.css');
+@import url('../explore/explore.css');
+@import url('../generation/generation.css');
+@import url('../library/dialogs.css');
+@import url('../songs/song-heading.css');
+@import url('../settings/settings.css');
+@import url('../profiles/profiles.css');
+@import url('./surfaces.css');
+@import url('./responsive.css');
+@import url('./form-fields.css');
+@import url('./creation-card.css');
+@import url('./empty-state.css');
+@import url('./media-pairs.css');
+
+/* Genre tags share the Explore treatment wherever song metadata appears. */
+:is(.genre-pill, .song-header-tag, .genre-tag) {
+  display: inline-block;
+  max-width: 100%;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 20px;
+  background: var(--highlight);
+  color: var(--text);
+  font-size: var(--font-size-micro);
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+/* Button labels use the regular weight, including nested label elements. */
+button,
+button * {
+  font-weight: var(--font-weight-regular) !important;
+}
+
+button :is(strong, h1, h2, h3, h4, h5, h6) {
+  font-weight: var(--font-weight-semibold) !important;
+}
+
+/* Keep the Encore wordmark distinct from ordinary button labels. */
+.brand .brand-title,
+.mobile-brand,
+.mobile-brand > span {
+  font-weight: var(--font-weight-bold) !important;
+}
+
+/* Heading and supporting text share one compact vertical rhythm. */
+.heading-stack {
+  display: grid;
+  gap: var(--heading-subtext-gap);
+  min-width: 0;
+}
+.heading-stack > * {
+  margin: 0;
+}

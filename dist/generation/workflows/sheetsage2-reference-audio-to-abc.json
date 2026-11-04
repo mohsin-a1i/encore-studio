@@ -1,0 +1,42 @@
+{
+  "1": {
+    "class_type": "LoadAudio",
+    "inputs": {
+      "audio": "Choose reference audio.mp3"
+    },
+    "_meta": {
+      "title": "Reference audio"
+    }
+  },
+  "2": {
+    "class_type": "AudioEncoderLoader",
+    "inputs": {
+      "audio_encoder_name": "minimax-music3\\sheetsage2_bf16.safetensors"
+    },
+    "_meta": {
+      "title": "SheetSage2 encoder"
+    }
+  },
+  "3": {
+    "class_type": "SheetSage2AudioToABC",
+    "inputs": {
+      "audio_encoder": ["2", 0],
+      "audio": ["1", 0],
+      "mode": "full"
+    },
+    "_meta": {
+      "title": "Transcribe melody and harmony"
+    }
+  },
+  "4": {
+    "class_type": "SaveText",
+    "inputs": {
+      "text": ["3", 0],
+      "filename_prefix": "audio/Encore_reference_abc",
+      "format": "txt"
+    },
+    "_meta": {
+      "title": "Save ABC notation"
+    }
+  }
+}

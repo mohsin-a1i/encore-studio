@@ -1,0 +1,108 @@
+{
+  "1": {
+    "class_type": "CheckpointLoaderSimple",
+    "inputs": {
+      "ckpt_name": "yue2\\yue2_3b_bf16.safetensors"
+    },
+    "_meta": {
+      "title": "YuE2 model"
+    }
+  },
+  "2": {
+    "class_type": "YuE2GenerateABC",
+    "inputs": {
+      "clip": ["1", 1],
+      "style": "Describe the musical style",
+      "lyrics": "[Verse]\nYour original lyrics",
+      "seed": 0,
+      "mode": "full",
+      "max_abc_tokens": 8192,
+      "temperature": 0.7,
+      "top_p": 0.9,
+      "top_k": 30,
+      "repetition_penalty": 1.005,
+      "penalty_window": 100
+    },
+    "_meta": {
+      "title": "Plan the score"
+    }
+  },
+  "3": {
+    "class_type": "YuE2GenerateMusic",
+    "inputs": {
+      "clip": ["1", 1],
+      "style": "Describe the musical style",
+      "lyrics": "[Verse]\nYour original lyrics",
+      "abc": ["2", 0],
+      "seed": 0,
+      "mode": "full",
+      "max_duration": 360,
+      "temperature": 1,
+      "top_p": 0.95,
+      "top_k": 100,
+      "repetition_penalty": 1.2,
+      "cfg_scale": 1
+    },
+    "_meta": {
+      "title": "Compose the song"
+    }
+  },
+  "4": {
+    "class_type": "ConditioningZeroOut",
+    "inputs": {
+      "conditioning": ["3", 0]
+    },
+    "_meta": {
+      "title": "Empty negative conditioning"
+    }
+  },
+  "5": {
+    "class_type": "EmptyYuE2LatentAudio",
+    "inputs": {
+      "seconds": ["3", 1],
+      "batch_size": 1
+    },
+    "_meta": {
+      "title": "Match the composed length"
+    }
+  },
+  "6": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": ["1", 0],
+      "positive": ["3", 0],
+      "negative": ["4", 0],
+      "latent_image": ["5", 0],
+      "seed": 0,
+      "steps": 32,
+      "cfg": 1,
+      "sampler_name": "dpm_2",
+      "scheduler": "sgm_uniform",
+      "denoise": 1
+    },
+    "_meta": {
+      "title": "Render audio"
+    }
+  },
+  "7": {
+    "class_type": "VAEDecodeAudio",
+    "inputs": {
+      "samples": ["6", 0],
+      "vae": ["1", 2]
+    },
+    "_meta": {
+      "title": "Decode the audio"
+    }
+  },
+  "8": {
+    "class_type": "SaveAudioAdvanced",
+    "inputs": {
+      "audio": ["7", 0],
+      "filename_prefix": "audio/Encore_song",
+      "format": "flac"
+    },
+    "_meta": {
+      "title": "Save the song"
+    }
+  }
+}

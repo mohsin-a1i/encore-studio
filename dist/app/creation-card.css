@@ -1,0 +1,49 @@
+button.creation-card {
+  position: relative;
+  min-height: 60px;
+  padding: 10px;
+  gap: 8px;
+  border-radius: 14px;
+  background: var(--bg);
+}
+button.selection-create .selection-name {
+  color: var(--muted);
+}
+button.creation-card > .icon {
+  color: var(--muted);
+  background: var(--surface);
+}
+button.creation-card:hover > .icon,
+button.creation-card:focus-visible > .icon {
+  color: var(--accent);
+  background: var(--accent-wash);
+}
+.selection-create.creation-card,
+.studio-create-song.creation-card {
+  border-style: solid;
+  border-color: transparent;
+}
+.creation-card-border {
+  position: absolute;
+  inset: -1px;
+  width: calc(100% + 2px);
+  height: calc(100% + 2px);
+  pointer-events: none;
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+  stroke-dasharray: 12 7;
+}
+.creation-card-border rect {
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+}
+.creation-card:hover > .creation-card-border,
+.creation-card:focus-visible > .creation-card-border {
+  stroke: var(--accent);
+}
+button.creation-card small {
+  color: var(--muted);
+  font-size: var(--font-size-micro);
+  line-height: 1.5;
+}

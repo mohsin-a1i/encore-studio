@@ -1,0 +1,203 @@
+#explore-results {
+  min-width: 0;
+  overflow-x: clip;
+}
+.explore-idea-fab {
+  position: fixed;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: calc(var(--player) + 24px + env(safe-area-inset-bottom));
+  z-index: 45;
+  width: auto;
+  max-width: calc(100% - 48px);
+  height: 56px;
+  gap: 10px;
+  padding: 0 20px;
+  border-radius: 28px;
+  box-shadow: 0 8px 28px var(--shadow);
+}
+.explore-form {
+  display: grid;
+  gap: 12px;
+}
+.explore-form textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 128px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  background: var(--bg);
+  font-size: var(--font-size-body);
+}
+.explore-idea-actions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+.explore-status,
+.explore-footnote {
+  text-align: center;
+  color: var(--muted);
+  margin: 24px 0;
+}
+.explore-deck-layout {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 440px) 56px;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  margin: 48px auto 0;
+}
+.explore-deck {
+  position: relative;
+  min-width: 0;
+  aspect-ratio: 440 / 700;
+  min-height: 520px;
+  isolation: isolate;
+}
+.explore-card {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  background: var(--panel);
+  overflow: hidden;
+  touch-action: pan-y pinch-zoom;
+  user-select: none;
+  transform-origin: center;
+}
+.explore-card[data-slot='0'] {
+  z-index: 3;
+  transform: none;
+}
+.explore-card[data-slot='1'] {
+  z-index: 2;
+  transform: translateY(-12px) scale(0.97);
+}
+.explore-card[data-slot='2'] {
+  z-index: 1;
+  transform: translateY(-24px) scale(0.94);
+}
+.explore-back-card {
+  pointer-events: none;
+}
+.explore-card > img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 14px;
+  pointer-events: none;
+}
+.explore-card-copy {
+  align-content: start;
+  overflow: hidden;
+}
+.explore-card h2 {
+  font-size: var(--font-size-section);
+  font-weight: var(--font-weight-semibold);
+  overflow-wrap: anywhere;
+}
+.explore-card-copy p {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+.explore-card h2,
+.explore-card-copy > p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+.explore-side-action {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--panel);
+  color: var(--text);
+}
+.explore-side-action:hover {
+  background: var(--highlight);
+  border-color: var(--accent);
+}
+.explore-preparing-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--muted);
+  text-align: center;
+  background: radial-gradient(circle at 50% 35%, var(--glow), transparent 60%), var(--panel);
+}
+.explore-preparing-card .generation-art {
+  width: min(100%, 220px);
+}
+.explore-preparing-copy {
+  max-width: 30ch;
+  padding-inline: 20px;
+  text-wrap: balance;
+}
+.explore-preparing-copy strong {
+  color: var(--text);
+  font-size: var(--font-size-section);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.4;
+}
+.explore-preparing-copy p {
+  color: var(--muted);
+  font-size: var(--font-size-body);
+  line-height: 1.7;
+}
+.explore-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.explore-swipe-hint {
+  position: absolute;
+  top: 32px;
+  inset-inline: 32px;
+  border-radius: 8px;
+  text-align: center;
+  background: var(--panel);
+  color: var(--text);
+}
+.explore-swipe-hint:not(:empty) {
+  padding: 12px;
+  border: 1px solid var(--accent);
+}
+@media (max-width: 600px) {
+  .explore-idea-fab {
+    right: max(18px, env(safe-area-inset-right));
+  }
+  .explore-idea-actions > .button {
+    flex: 1;
+  }
+  .explore-deck-layout {
+    display: block;
+    margin: 40px 12px 0;
+  }
+  .explore-deck {
+    width: min(100%, 440px);
+    margin-inline: auto;
+  }
+  .explore-side-action,
+  .explore-side-spacer {
+    display: none;
+  }
+  .explore-card {
+    padding: 16px;
+    gap: 12px;
+  }
+}

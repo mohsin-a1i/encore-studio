@@ -1,0 +1,558 @@
+{
+  "CheckpointLoaderSimple": {
+    "input": {
+      "required": {
+        "ckpt_name": [
+          ["sam\\sam3.1_multiplex_fp16.safetensors", "yue2\\yue2_3b_bf16.safetensors"],
+          {
+            "tooltip": "The name of the checkpoint (model) to load."
+          }
+        ]
+      }
+    },
+    "output": ["MODEL", "CLIP", "VAE"]
+  },
+  "YuE2GenerateABC": {
+    "input": {
+      "required": {
+        "clip": ["CLIP", {}],
+        "style": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true
+          }
+        ],
+        "lyrics": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true
+          }
+        ],
+        "seed": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 18446744073709552000,
+            "control_after_generate": true
+          }
+        ],
+        "mode": [
+          "COMBO",
+          {
+            "tooltip": "full: generates melody and chords; melody: generates melody only, recommended for covers.",
+            "multiselect": false,
+            "options": ["full", "melody"]
+          }
+        ],
+        "max_abc_tokens": [
+          "INT",
+          {
+            "advanced": true,
+            "default": 8192,
+            "min": 1,
+            "max": 20000
+          }
+        ],
+        "temperature": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 0.7,
+            "min": 0,
+            "max": 5,
+            "step": 0.05
+          }
+        ],
+        "top_p": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 0.9,
+            "min": 0.01,
+            "max": 1,
+            "step": 0.01
+          }
+        ],
+        "top_k": [
+          "INT",
+          {
+            "advanced": true,
+            "default": 30,
+            "min": 1,
+            "max": 32768
+          }
+        ],
+        "repetition_penalty": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 1.005,
+            "min": 0.01,
+            "max": 10,
+            "step": 0.005
+          }
+        ],
+        "penalty_window": [
+          "INT",
+          {
+            "tooltip": "Number of recent ABC tokens used to penalize repetition.",
+            "advanced": true,
+            "default": 100,
+            "min": 1,
+            "max": 20000
+          }
+        ]
+      }
+    },
+    "output": ["STRING"],
+    "api_node": false
+  },
+  "YuE2GenerateMusic": {
+    "input": {
+      "required": {
+        "clip": ["CLIP", {}],
+        "style": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true
+          }
+        ],
+        "lyrics": [
+          "STRING",
+          {
+            "multiline": true,
+            "dynamicPrompts": true
+          }
+        ],
+        "abc": [
+          "STRING",
+          {
+            "tooltip": "Connect the ABC generator or supply an edited score. Leave empty to use off mode automatically.",
+            "default": "",
+            "multiline": true
+          }
+        ],
+        "seed": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 18446744073709552000,
+            "control_after_generate": true
+          }
+        ],
+        "mode": [
+          "COMBO",
+          {
+            "tooltip": "full: generates melody and chords; melody: generates melody only, recommended for covers.",
+            "multiselect": false,
+            "options": ["full", "melody"]
+          }
+        ],
+        "max_duration": [
+          "FLOAT",
+          {
+            "tooltip": "Maximum duration in seconds. Automatically reduced for long prompts; generation can stop earlier.",
+            "default": 360,
+            "min": 0.04,
+            "max": 900,
+            "step": 0.04
+          }
+        ],
+        "temperature": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 1,
+            "min": 0,
+            "max": 5,
+            "step": 0.05
+          }
+        ],
+        "top_p": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 0.95,
+            "min": 0.01,
+            "max": 1,
+            "step": 0.01
+          }
+        ],
+        "top_k": [
+          "INT",
+          {
+            "advanced": true,
+            "default": 100,
+            "min": 1,
+            "max": 32768
+          }
+        ],
+        "repetition_penalty": [
+          "FLOAT",
+          {
+            "advanced": true,
+            "default": 1.2,
+            "min": 0.01,
+            "max": 10,
+            "step": 0.01
+          }
+        ]
+      },
+      "optional": {
+        "cfg_scale": [
+          "FLOAT",
+          {
+            "tooltip": "Autoregressive guidance for style and lyrics. 1.0 disables CFG, matching the ABC workflow. Use 1.01 to match the original off-mode guidance.",
+            "advanced": true,
+            "default": 1,
+            "min": 0,
+            "max": 100,
+            "step": 0.01
+          }
+        ]
+      }
+    },
+    "output": ["CONDITIONING", "FLOAT"],
+    "api_node": false
+  },
+  "ConditioningZeroOut": {
+    "input": {
+      "required": {
+        "conditioning": ["CONDITIONING"]
+      }
+    },
+    "output": ["CONDITIONING"]
+  },
+  "EmptyYuE2LatentAudio": {
+    "input": {
+      "required": {
+        "seconds": [
+          "FLOAT",
+          {
+            "default": 120,
+            "min": 0.04,
+            "max": 1000,
+            "step": 0.04
+          }
+        ],
+        "batch_size": [
+          "INT",
+          {
+            "default": 1,
+            "min": 1,
+            "max": 4096
+          }
+        ]
+      }
+    },
+    "output": ["LATENT"],
+    "api_node": false
+  },
+  "KSampler": {
+    "input": {
+      "required": {
+        "model": [
+          "MODEL",
+          {
+            "tooltip": "The model used for denoising the input latent."
+          }
+        ],
+        "seed": [
+          "INT",
+          {
+            "default": 0,
+            "min": 0,
+            "max": 18446744073709552000,
+            "control_after_generate": true,
+            "tooltip": "The random seed used for creating the noise."
+          }
+        ],
+        "steps": [
+          "INT",
+          {
+            "default": 20,
+            "min": 1,
+            "max": 10000,
+            "tooltip": "The number of steps used in the denoising process."
+          }
+        ],
+        "cfg": [
+          "FLOAT",
+          {
+            "default": 8,
+            "min": 0,
+            "max": 100,
+            "step": 0.1,
+            "round": 0.01,
+            "tooltip": "The Classifier-Free Guidance scale balances creativity and adherence to the prompt. Higher values result in images more closely matching the prompt however too high values will negatively impact quality."
+          }
+        ],
+        "sampler_name": [
+          [
+            "euler",
+            "euler_cfg_pp",
+            "euler_ancestral",
+            "euler_ancestral_cfg_pp",
+            "heun",
+            "heunpp2",
+            "exp_heun_2_x0",
+            "exp_heun_2_x0_sde",
+            "dpm_2",
+            "dpm_2_ancestral",
+            "lms",
+            "dpm_fast",
+            "dpm_adaptive",
+            "dpmpp_2s_ancestral",
+            "dpmpp_2s_ancestral_cfg_pp",
+            "dpmpp_sde",
+            "dpmpp_sde_gpu",
+            "dpmpp_2m",
+            "dpmpp_2m_cfg_pp",
+            "dpmpp_2m_sde",
+            "dpmpp_2m_sde_gpu",
+            "dpmpp_2m_sde_heun",
+            "dpmpp_2m_sde_heun_gpu",
+            "dpmpp_3m_sde",
+            "dpmpp_3m_sde_gpu",
+            "ddpm",
+            "lcm",
+            "ipndm",
+            "ipndm_v",
+            "deis",
+            "cfgpp_ud10_ab",
+            "res_multistep",
+            "res_multistep_cfg_pp",
+            "res_multistep_ancestral",
+            "res_multistep_ancestral_cfg_pp",
+            "gradient_estimation",
+            "gradient_estimation_cfg_pp",
+            "er_sde",
+            "seeds_2",
+            "seeds_3",
+            "sa_solver",
+            "sa_solver_pece",
+            "ddim",
+            "uni_pc",
+            "uni_pc_bh2"
+          ],
+          {
+            "tooltip": "The algorithm used when sampling, this can affect the quality, speed, and style of the generated output."
+          }
+        ],
+        "scheduler": [
+          [
+            "simple",
+            "sgm_uniform",
+            "karras",
+            "exponential",
+            "ddim_uniform",
+            "beta",
+            "normal",
+            "linear_quadratic",
+            "kl_optimal"
+          ],
+          {
+            "tooltip": "The scheduler controls how noise is gradually removed to form the image."
+          }
+        ],
+        "positive": [
+          "CONDITIONING",
+          {
+            "tooltip": "The conditioning describing the attributes you want to include in the image."
+          }
+        ],
+        "negative": [
+          "CONDITIONING",
+          {
+            "tooltip": "The conditioning describing the attributes you want to exclude from the image."
+          }
+        ],
+        "latent_image": [
+          "LATENT",
+          {
+            "tooltip": "The latent image to denoise."
+          }
+        ],
+        "denoise": [
+          "FLOAT",
+          {
+            "default": 1,
+            "min": 0,
+            "max": 1,
+            "step": 0.01,
+            "tooltip": "The amount of denoising applied, lower values will maintain the structure of the initial image allowing for image to image sampling."
+          }
+        ]
+      }
+    },
+    "output": ["LATENT"]
+  },
+  "VAEDecodeAudio": {
+    "input": {
+      "required": {
+        "samples": ["LATENT", {}],
+        "vae": ["VAE", {}]
+      }
+    },
+    "output": ["AUDIO"],
+    "api_node": false
+  },
+  "SaveAudioAdvanced": {
+    "input": {
+      "required": {
+        "audio": [
+          "AUDIO",
+          {
+            "tooltip": "The audio to save."
+          }
+        ],
+        "filename_prefix": [
+          "STRING",
+          {
+            "tooltip": "The prefix for the file to save. May include formatting tokens such as %date:yyyy-MM-dd%.",
+            "default": "audio/ComfyUI",
+            "multiline": false
+          }
+        ],
+        "format": [
+          "COMFY_DYNAMICCOMBO_V3",
+          {
+            "tooltip": "The file format in which to save the audio.",
+            "options": [
+              {
+                "key": "flac",
+                "inputs": {
+                  "required": {}
+                }
+              },
+              {
+                "key": "mp3",
+                "inputs": {
+                  "required": {
+                    "quality": [
+                      "COMBO",
+                      {
+                        "default": "V0",
+                        "multiselect": false,
+                        "options": ["V0", "128k", "320k"]
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "key": "opus",
+                "inputs": {
+                  "required": {
+                    "quality": [
+                      "COMBO",
+                      {
+                        "default": "128k",
+                        "multiselect": false,
+                        "options": ["64k", "96k", "128k", "192k", "320k"]
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "hidden": {
+        "prompt": ["PROMPT"],
+        "extra_pnginfo": ["EXTRA_PNGINFO"]
+      }
+    },
+    "output": ["AUDIO"],
+    "api_node": false
+  },
+  "LoadAudio": {
+    "input": {
+      "required": {
+        "audio": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": ["EncoreSample_test.mp3"],
+            "audio_upload": true
+          }
+        ]
+      }
+    },
+    "output": ["AUDIO"],
+    "api_node": false
+  },
+  "AudioEncoderLoader": {
+    "input": {
+      "required": {
+        "audio_encoder_name": [
+          "COMBO",
+          {
+            "multiselect": false,
+            "options": ["minimax-music3\\sheetsage2_bf16.safetensors"]
+          }
+        ]
+      }
+    },
+    "output": ["AUDIO_ENCODER"],
+    "api_node": false
+  },
+  "SheetSage2AudioToABC": {
+    "input": {
+      "required": {
+        "audio_encoder": ["AUDIO_ENCODER", {}],
+        "audio": ["AUDIO", {}],
+        "mode": [
+          "COMBO",
+          {
+            "tooltip": "full: generates melody and chords; melody: generates melody only, recommended for covers.",
+            "multiselect": false,
+            "options": ["melody", "full"]
+          }
+        ]
+      }
+    },
+    "output": ["STRING"],
+    "api_node": false
+  },
+  "SaveText": {
+    "input": {
+      "required": {
+        "text": [
+          "STRING",
+          {
+            "forceInput": true,
+            "multiline": false
+          }
+        ],
+        "filename_prefix": [
+          "STRING",
+          {
+            "default": "ComfyUI",
+            "multiline": false
+          }
+        ],
+        "format": [
+          "COMBO",
+          {
+            "default": "txt",
+            "multiselect": false,
+            "options": ["txt", "csv", "md", "json"]
+          }
+        ]
+      },
+      "hidden": {
+        "prompt": ["PROMPT"],
+        "extra_pnginfo": ["EXTRA_PNGINFO"]
+      }
+    },
+    "output": ["STRING"],
+    "api_node": false
+  }
+}

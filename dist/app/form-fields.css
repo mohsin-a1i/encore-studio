@@ -1,0 +1,59 @@
+/* One label, control and feedback rhythm across pages and dialogs. */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--heading-subtext-gap);
+  min-width: 0;
+  margin: 0;
+}
+.field-label,
+.theme-choice-title,
+.field > label,
+.field > span:first-child {
+  margin: 0;
+  color: var(--text);
+  font: var(--font-weight-medium) var(--font-size-body)/1.5 var(--font-family-body);
+}
+.field > :is(.field-label, label, span:first-child):not(.visually-hidden) {
+  margin-bottom: 4px;
+}
+.field-message,
+.field .editor-section-description,
+.field .reference-error,
+.field .lyrics-validation-error {
+  margin: 0;
+  padding: 0;
+  color: var(--muted);
+  font: var(--font-weight-regular) var(--font-size-body)/1.6 var(--font-family-body);
+  overflow-wrap: anywhere;
+}
+.field > .field-message {
+  margin-top: 4px;
+}
+.field .field-error {
+  color: var(--danger-muted);
+}
+.field [aria-invalid='true'] {
+  border-color: var(--danger-muted);
+}
+form > .field + .field,
+form > p + .field,
+form > .lyrics-reference-note + .field {
+  margin-top: 20px;
+}
+.visually-hidden,
+.song-editor
+  :is(
+    label[for='sample-url'],
+    label[for='song-style'],
+    label[for='song-lyrics'],
+    .song-title-field > .field-label
+  ) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

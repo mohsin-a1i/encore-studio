@@ -1,0 +1,224 @@
+.profile-button {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  padding: 4px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+}
+.profile-button:is(:hover, [aria-expanded='true']) {
+  background: var(--highlight);
+  border-color: var(--line);
+}
+.profile-button .avatar {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  line-height: 1;
+}
+.modal-overlay.profiles-overlay {
+  align-items: start;
+  justify-items: end;
+  padding: 72px clamp(12px, 3vw, 24px) 16px;
+  background: transparent;
+  backdrop-filter: none;
+}
+.modal:is(.profiles-modal, .profile-form-modal, .profile-confirm-modal) {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 400px;
+  max-height: calc(100dvh - 88px);
+  overflow: hidden;
+  border-radius: 24px;
+  box-shadow: 0 16px 56px var(--shadow);
+}
+:is(.profiles-modal, .profile-form-modal, .profile-confirm-modal) > .modal-head {
+  flex: none;
+  padding: 10px 16px 10px 20px;
+  border: 0;
+  background: transparent;
+}
+:is(.profiles-modal, .profile-form-modal, .profile-confirm-modal) .modal-head .icon-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+}
+:is(.profiles-modal, .profile-form-modal, .profile-confirm-modal) > .modal-body {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.profiles-modal > .modal-body {
+  padding: 0 16px 16px;
+}
+.profile-row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  border-radius: 16px;
+  background: var(--surface);
+}
+.profile-row[data-menu-open] {
+  z-index: 3;
+}
+.profile-current {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 24px 16px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  text-align: center;
+}
+.profiles-modal .avatar {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  color: var(--accent);
+  background: var(--accent-wash);
+  font-size: var(--font-size-body);
+  line-height: 1;
+}
+.profiles-modal .profile-current-avatar {
+  width: 64px;
+  height: 64px;
+  font-size: var(--font-size-section);
+}
+.profile-current-copy {
+  width: 100%;
+  min-width: 0;
+}
+.profiles-modal .profile-greeting {
+  margin: 0;
+  color: var(--text);
+  font: var(--font-weight-medium) var(--font-size-section) / 1.3 var(--font-family-body);
+  letter-spacing: normal;
+  overflow-wrap: anywhere;
+}
+.profile-current-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--muted);
+  font-size: var(--font-size-micro);
+  line-height: 1.5;
+}
+.profile-current-status > .icon {
+  color: var(--accent);
+}
+.profile-switcher {
+  margin-top: 20px;
+}
+#profile-switch-heading {
+  margin: 0 8px 8px;
+  color: var(--muted);
+  font-size: var(--font-size-micro);
+  font-weight: var(--font-weight-regular);
+  line-height: 1.5;
+}
+.profile-list {
+  display: grid;
+  gap: 6px;
+}
+.profile-list > .profile-row:hover {
+  background: var(--highlight);
+}
+.profile-choice {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  min-height: 72px;
+  padding: 12px;
+  border-radius: inherit;
+  text-align: start;
+}
+.profile-choice:focus-visible {
+  outline-offset: -3px;
+}
+.profile-switch-copy {
+  flex: 1;
+  min-width: 0;
+}
+.profile-switch-copy > strong {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  font-size: var(--font-size-body);
+  line-height: 1.5;
+}
+.profile-switch-copy > small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--muted);
+  font-size: var(--font-size-micro);
+  line-height: 1.5;
+}
+.profile-card-menu {
+  position: relative;
+  flex: none;
+  margin-right: 6px;
+}
+.profile-current > .profile-card-menu {
+  position: absolute;
+  top: 6px;
+  right: 0;
+}
+.profile-menu-toggle {
+  width: 44px;
+  height: 44px;
+}
+.profile-menu:not([hidden]) {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: grid;
+  min-width: 144px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 12px 32px var(--shadow);
+}
+.profile-menu > button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-align: start;
+  font-size: var(--font-size-body);
+}
+.profile-menu > button:is(:hover, :focus-visible) {
+  outline: 0;
+  background: var(--highlight);
+}
+.profile-menu [data-action='profile-delete']:is(:hover, :focus-visible) {
+  color: var(--danger-muted);
+  background: var(--danger-wash);
+}
+.profile-add.button {
+  width: 100%;
+  min-height: 48px;
+  margin-top: 16px;
+  border-radius: 24px;
+}
+.profile-form-modal .field-message {
+  font-size: var(--font-size-micro);
+}

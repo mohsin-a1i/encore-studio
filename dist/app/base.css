@@ -1,0 +1,135 @@
+/* Base styles */
+:root {
+  /* Shared typography: four sizes, one family, four weights. */
+  --font-root-size: 125%;
+  --font-family-body: 'DM Sans', sans-serif;
+  --font-size-micro: 0.6rem;
+  --font-size-small: var(--font-size-micro);
+  --font-size-body: 0.7rem;
+  --font-size-section: 1.1rem;
+  --font-size-heading: 1.35rem;
+  --heading-subtext-gap: 4px;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  font-size: var(--font-root-size);
+  color-scheme: dark;
+  --theme-hue: 220;
+  --theme-saturation: 0;
+  --bg: #000;
+  --panel: hsl(var(--theme-hue) calc(42% * var(--theme-saturation)) 10%);
+  --surface: hsl(var(--theme-hue) calc(42% * var(--theme-saturation)) 6%);
+  --highlight: hsl(var(--theme-hue) calc(40% * var(--theme-saturation)) 17%);
+  --line: hsl(var(--theme-hue) calc(32% * var(--theme-saturation)) 29%);
+  --text: #f5f5f5;
+  --muted: #b5b5b5;
+  --accent: #bdbdbd;
+  --on-accent: #fff;
+  --button-primary-bg: #767676;
+  --button-primary-hover: #6f6f6f;
+  --danger-bg: #eb1419;
+  --danger-hover: #de1217;
+  --danger-muted: #f1aa9d;
+  --danger-wash: #f1aa9d12;
+  --accent-wash: color-mix(in srgb, var(--accent) 12%, transparent);
+  --glow: color-mix(in srgb, var(--accent) 25%, transparent);
+  --light-wash: #ffffff14;
+  --shadow: #0009;
+  --sidebar: 226px;
+  --player: 98px;
+  accent-color: var(--button-primary-bg);
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: var(--font-size-body) var(--font-family-body);
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+a,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
+}
+button,
+a {
+  color: inherit;
+}
+button {
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  transition:
+    background-color 160ms,
+    border-color 160ms,
+    color 160ms,
+    transform 160ms;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+a {
+  text-decoration: none;
+}
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 5px;
+}
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 1px solid var(--accent);
+  border-color: var(--accent);
+}
+.icon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+  flex: none;
+}
+.icon.sm {
+  width: 16px;
+  height: 16px;
+}
+.icon.lg {
+  width: 26px;
+  height: 26px;
+}
+
+@media (max-width: 850px) {
+  :root {
+    --font-size-body: max(16px, 0.8rem);
+  }
+}
+
+/* Text fields use the shared responsive body size. */
+html
+  body
+  :is(
+    input:not([type='range']):not([type='checkbox']):not([type='radio']):not([type='file']):not(
+        [type='hidden']
+      ),
+    textarea,
+    select
+  ):not(.song-title-field > input) {
+  font-size: var(--font-size-body);
+}

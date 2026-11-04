@@ -1,0 +1,99 @@
+/* Shared surfaces and their non-floating header and footer bars. */
+.modal,
+.compose-card,
+.theme-choice,
+.settings-service,
+.playlist-card,
+.playlist-hero,
+.generation-stage {
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+.modal-head,
+.song-editor-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+}
+.modal-head .eyebrow,
+.song-editor-topbar .eyebrow {
+  display: block;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: var(--font-size-micro);
+  letter-spacing: 1.5px;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.modal-head h2.eyebrow {
+  margin: 0;
+  font-family: inherit;
+  font-weight: inherit;
+}
+.modal-heading {
+  min-width: 0;
+}
+.modal-head-actions .icon-button,
+.song-editor-tools .icon-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+}
+.modal-footer,
+.song-editor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--line);
+  background: var(--panel);
+}
+.song-detail-section-heading,
+.generation-input dt {
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+/* Inset sections can use the darker page surface within a panel. */
+.song-detail-panel,
+.sample-preview,
+.generation-input {
+  background: var(--bg);
+  border: 1px solid var(--line);
+}
+.song-detail-section-heading,
+.generation-input dt {
+  background: var(--bg);
+}
+.song-detail-section-heading h3,
+.generation-input dt {
+  min-width: 0;
+  color: var(--muted);
+  font-size: var(--font-size-micro);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.modal-head-actions,
+.song-editor-tools {
+  flex-shrink: 0;
+}
+.modal-head > :first-child,
+.song-editor-topbar > :first-child {
+  min-width: 0;
+}
+.song-detail-section-heading h3 {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+.modal-footer > .button {
+  min-height: 44px;
+}
